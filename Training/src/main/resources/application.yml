@@ -1,0 +1,110 @@
+info:
+  app:
+    name: gestbifly
+    website: gestbifly.io
+    course: IFCD0210
+    hoster: Seresco
+
+
+logging:
+  level:
+    root: INFO
+    '[es.seresco]': DEBUG
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+#        include: "*"
+        include: info, health, metrics, env
+  endpoint:
+    health:
+      enabled: true
+      show-components: always
+      probes:
+        enabled: true
+  health:
+    defaults:
+      enabled: true
+    db:
+      enabled: true
+      ignore-routing-data-sources: false
+    diskspace:
+      enabled: true
+      threshold: 100MB
+    ping:
+      enabled: true
+  info:
+    build:
+      enabled: true
+    env:
+      enabled: true
+    java:
+      enabled: true
+    defaults:
+      enabled: true
+    git:
+      enabled: true
+      mode: full
+
+
+server:
+  port: 8080
+
+
+spring:
+
+  output:
+    ansi:
+      enabled: detect
+
+  #
+  # Configurar la conection a la base de datos
+  #
+  datasource:
+    url: jdbc:mysql://localhost:3306/gestbifly
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # Indicar el DBMS
+  jpa:
+    database: MYSQL
+
+    open-in-view: true
+
+    # Indica si debe mostrar el log de las consultas sql ejecutadas
+    # Bueno a la hora de depurar 
+    show-sql: true
+
+    # Configurar Hibernate
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      '[hibernate.dialect.storage_engine]': innodb
+      '[hibernate.format_sql]': true
+
+  #
+  # MessageSource
+  #
+  messages:
+    basename: classpath:org/hibernate/validator/ValidationMessages, classpath:messages/ValidationMessages, classpath:messages/messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+    use-code-as-default-message: true
+    always-use-message-format: false
+
+
+appz:
+  message-source:
+    class: RELOADABLE_RESOURCE_BUNDLE
+    basenames: classpath:org/hibernate/validator/ValidationMessages, classpath:messages/ValidationMessages, classpath:messages/messages
+    default-encoding: UTF-8
+    default-locale: en_US
+    fallback-to-system-locale: false
+    use-code-as-default-message: true
+    always-use-message-format: false
+
